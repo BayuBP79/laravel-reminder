@@ -154,6 +154,11 @@ class Table extends Component
         $this->dispatch('offlineEventsSynced');
     }
 
+    public function setOfflineStatus($status)
+    {
+        $this->isOffline = $status;
+    }
+
     private function saveEventToDatabase($eventData)
     {
         $event = Event::updateOrCreate(['id' => $eventData['id']], $eventData);

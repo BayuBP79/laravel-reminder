@@ -1,10 +1,5 @@
 <div>
     <div x-data="eventHandler()" x-init="initEventHandler">
-        <button type="button" @click="openModal"
-            class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 shadow-lg shadow-cyan-500/50 dark:shadow-lg dark:shadow-cyan-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 cursor-pointer">
-            Create
-        </button>
-
         <div x-show="showModal"
             class="z-10 fixed inset-0 flex items-center justify-center bg-slate-300 dark:bg-transparent bg-opacity-75 backdrop-blur-sm">
             <div class="bg-white p-6 rounded shadow-lg w-full md:w-2/3 lg:w-1/2 dark:bg-slate-700 dark:text-white">
@@ -70,6 +65,16 @@
                 </form>
             </div>
         </div>
+        <div x-show="isOffline" class="bg-white dark:bg-gray-800  border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4"
+            role="alert">
+            <p class="font-bold text-gray-900 dark:text-slate-100">Offline Mode</p>
+            <p class="font-bold text-gray-900 dark:text-slate-100">You are currently working offline. Changes will
+                be synced when you're back online.</p>
+        </div>
+        <button type="button" @click="openModal"
+            class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 shadow-lg shadow-cyan-500/50 dark:shadow-lg dark:shadow-cyan-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 cursor-pointer">
+            Create
+        </button>
         <div>
             <section class="mt-10">
                 <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
@@ -187,6 +192,7 @@
 <script>
     function eventHandler() {
         return {
+            isOffline: false,
             showModal: false,
             modalTitle: 'Add New Event',
             modalButtonText: 'Create',
@@ -202,6 +208,9 @@
                 this.$watch('showModal', value => {
                     if (!value) this.resetForm();
                 });
+                this.checkOnlineStatus();
+                window.addEventListener('online', () => this.handleOnline());
+                window.addEventListener('offline', () => this.handleOffline());
 
                 Livewire.on('eventDataUpdated', data => {
                     this.showModal = true;
@@ -215,6 +224,10 @@
                         participants: data[0].eventData.participants || [{ name: '', email: '' }]
                     };
                 });
+            },
+            checkOnlineStatus() {
+                this.isOffline = !navigator.onLine;
+                @this.call('setOfflineStatus', this.isOffline);
             },
             openModal() {
                 this.showModal = true;
@@ -250,7 +263,15 @@
             },
             removeParticipant(index) {
                 this.eventData.participants.splice(index, 1);
-            }
+            },
+            handleOnline() {
+                this.isOffline = false;
+                @this.call('setOfflineStatus', false);
+            },
+            handleOffline() {
+                this.isOffline = true;
+                @this.call('setOfflineStatus', true);
+            },
         }
     }
 
