@@ -39,7 +39,11 @@ This is laravel event reminder app that automatically send email at specified ti
     ```sh
     php artisan migrate
 
-6.  Build assets
+6. run the webserver
+    ```sh
+    php artisan serve
+
+7.  Build assets
     ```sh
     npm run dev //for continuous refresh on changes
     npm run build //for manual refresh asset changes
