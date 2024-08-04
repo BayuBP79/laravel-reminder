@@ -24,18 +24,22 @@ This is laravel event reminder app that automatically send email at specified ti
     cd laravel-reminder
 
 2.  Install dependencies:
+    ```sh
     composer install
     npm install
 
 3.  Set up environment variables:
+    ```sh
     cp .env.example .env
     php artisan key:generate
 
 4.  Configure your database in the `.env` file.
 
 5.  Run migrations
+    ```sh
     php artisan migrate
 
 6.  Build assets
-    npm run dev => for continuous refresh on changes
-    npm run build => for manual refresh asset changes
+    ```sh
+    npm run dev //for continuous refresh on changes
+    npm run build //for manual refresh asset changes
