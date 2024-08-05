@@ -17,8 +17,8 @@ class SendReminderEmails extends Command
     public function handle()
     {
         $now = Carbon::now();
-        $date = $now->toDateString(); // 'Y-m-d'
-        $time = $now->format('H:i'); // 'H:i'
+        $date = $now->toDateString();
+        $time = $now->format('H:i');
 
         $reminders = Reminder::whereDate('reminder_date', $date)
                             ->whereTime('reminder_date', $time)

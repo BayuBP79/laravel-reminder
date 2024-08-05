@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EventCSVController;
 use App\Models\Reminder;
 use App\Mail\ReminderEmail;
 use Illuminate\Support\Facades\Mail;
@@ -34,6 +35,12 @@ Route::group(['prefix' => 'event', 'as' => 'event.'], function () {
         return view('event.reminder');
     })->name('reminder')->middleware(['auth']);
 });
+
+Route::controller(EventCSVController::class)->group(function(){
+    Route::get('upload', 'uploadForm')->name('upload')->middleware(['auth']);
+    Route::post('import', 'importCsv')->name('import')->middleware(['auth']);
+});
+
 
 Route::get('/offline', function () {
     return view('offline');

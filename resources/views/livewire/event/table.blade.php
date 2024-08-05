@@ -68,13 +68,17 @@
         <div x-show="isOffline" class="bg-white dark:bg-gray-800  border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4"
             role="alert">
             <p class="font-bold text-gray-900 dark:text-slate-100">Offline Mode</p>
-            <p class="font-bold text-gray-900 dark:text-slate-100">You are currently working offline. Changes will
+            <p class="font-bold text-gray-900 dark:text-slate-100">You are currently working offline. You still can create data, changes will
                 be synced when you're back online.</p>
         </div>
         <button type="button" @click="openModal"
             class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 shadow-lg shadow-cyan-500/50 dark:shadow-lg dark:shadow-cyan-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 cursor-pointer">
             Create
         </button>
+        <a href="{{ route('upload') }}" wire:navigate
+            class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 shadow-lg shadow-cyan-500/50 dark:shadow-lg dark:shadow-cyan-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 cursor-pointer">
+            Import
+        </a>
         <div>
             <section class="mt-10">
                 <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
@@ -275,7 +279,6 @@
         }
     }
 
-    // Listen for online event
     window.addEventListener('online', () => {
         const offlineEvents = JSON.parse(localStorage.getItem('offlineEvents') || '[]');
         if (offlineEvents.length > 0) {
@@ -285,15 +288,12 @@
         }
     });
 
-    // Listen for Livewire events
     window.addEventListener('livewire:load', function () {
         Livewire.on('eventStoredOffline', () => {
-            // Show a notification that the event was stored offline
             alert('Event stored offline. It will be synced when you are back online.');
         });
 
         Livewire.on('offlineEventsSynced', () => {
-            // Show a notification that offline events have been synced
             alert('Offline events have been synced successfully.');
         });
     });
